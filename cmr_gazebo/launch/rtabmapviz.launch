@@ -1,0 +1,22 @@
+<launch>
+  <group ns="rtabmap">
+    <node pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" output="screen">
+      <param name="frame_id" type="string" value="base_link"/>
+
+
+      <remap from="rgb/image"       to="/cam_front/color/image_raw"/>
+      <remap from="depth/image"     to="/cam_front/depth/image_rect_raw"/>
+      <remap from="rgb/camera_info" to="/cam_front/color/camera_info"/>
+      <remap from="scan"            to="/base/laser/scan_filtered"/>
+      <remap from="scan_cloud"      to="/velodyne_points"/>
+
+      <param name="rgb/image_transport"   type="string" value="compressed"/>
+      <param name="depth/image_transport" type="string" value="compressedDepth"/>
+
+      <remap from="mapData"         to="mapData"/>
+      <remap from="odom"            to="odom"/>
+
+
+    </node>
+  </group>
+</launch>

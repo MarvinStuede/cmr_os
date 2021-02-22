@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+
+	<!-- Chassis properties -->
+	<!-- TODO: Update Values-->
+	<xacro:property name="torsoMass" value="0.1"/>
+	<xacro:property name="torsoIxx" value="0.2"/>
+	<xacro:property name="torsoIyy" value="0.2"/>
+	<xacro:property name="torsoIzz" value="0.2"/>
+	<xacro:property name="torsoOffsetX" value="-0.098"/>
+	<xacro:property name="torsoOffsetY" value="0"/>
+	<xacro:property name="torsoOffsetZ" value="0.6927"/>
+        <xacro:property name="torsorot" value="${-0.25*PI/180}"/><!-- Torso drauf, Basis ab -->
+        <!--<xacro:property name="torsorot" value="${0.0}"/>-->
+
+
+
+</robot>

@@ -1,0 +1,6 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+  <include file="$(find cmr_description)/launch/model_with_pub.launch"/>
+  <test test-name="test_tf" pkg="cmr_description" type="test_tf" />
+</launch>

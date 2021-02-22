@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- Shutdown LED -->
+    <node pkg="cmr_os" type="shutdown_node" name="led_shutdown" required="true"/>
+
+    <!-- Launch LED Strips -->
+    <include file="$(find cmr_led)/launch/led_strips.launch"/>
+
+    <!-- **************************************** End: CMR   ********************************-->
+
+    <!-- **************************************** Machine: Pi   ********************************-->
+    <group>
+
+     <machine name="pi" address="cmr01-pi" user="pi" env-loader="/home/pi/cmr_utils/Scripts/setup_scripts/env_loader_scripts/env_load_pi.sh" default="true" />
+     <!-- LED Panel -->
+     <include file="$(find cmr_driver)/launch/remote/led_panel.launch"/>
+    </group>
+    <!-- **************************************** End: Pi   ********************************-->
+
+</launch>

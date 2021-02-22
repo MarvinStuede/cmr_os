@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://sekom</uri>
+      <name>sekom</name>
+      <pose>17.1037 31.3523 0 1.57079 0 0</pose>
+    </include>
+  </world>
+</sdf>

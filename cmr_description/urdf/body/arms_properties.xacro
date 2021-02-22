@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+
+	<!-- Chassis properties -->
+	<!-- TODO: Update Values-->
+	<xacro:property name="armMass" value="0.1"/>
+	<xacro:property name="armIxx" value="0.01"/>
+	<xacro:property name="armIyy" value="0.01"/>
+	<xacro:property name="armIzz" value="0.01"/>
+	<xacro:property name="armLowerLim" value="${-45*pi/180}"/>
+	<xacro:property name="armUpperLim" value="${135*pi/180}"/>
+	<xacro:property name="armVelLim" value="3.1415"/>
+	<xacro:property name="armLeftOffsetX" value="0"/>
+	<xacro:property name="armLeftOffsetY" value="0.218"/>
+	<xacro:property name="armLeftOffsetZ" value="0.409"/>
+	<xacro:property name="armRightOffsetX" value="0"/>
+	<xacro:property name="armRightOffsetY" value="-0.218"/>
+	<xacro:property name="armRightOffsetZ" value="0.409"/>
+
+
+
+</robot>

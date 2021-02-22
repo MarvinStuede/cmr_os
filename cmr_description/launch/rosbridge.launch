@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+  	<node pkg="tf" type="static_transform_publisher" name="map_hoersaal_pub" args="0 0 0 0 0 0 map hoersaal_link 1" />
+	<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+		<!--<remap from="/map_vis" to="/map" />-->
+	</include>
+	<!--<node pkg="topic_tools" type="relay" name="map_relay" args="/rtabmap/grid_map /map"/>-->
+        <node pkg="cmr_os" type="pose_republish" name="pose_republish"/>
+	<node pkg="interactive_marker_proxy" type="proxy" name="marker_proxy" args="topic_ns:=/go_to_node/update target_frame:=/map"/>
+
+
+	<node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher" />
+</launch>

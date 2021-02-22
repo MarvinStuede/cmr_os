@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+<!-- LOAD PARAMETERS -->
+    <rosparam file="$(find cmr_description)/cfg/sobi_control.yaml" command="load" />
+	<!-- load the controllers -->
+  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    	output="screen" ns="/sobi" args="--stopped ear_right_position_controller ear_left_position_controller ear_right_trajectory_controller ear_left_trajectory_controller">
+
+    </node>
+
+	<!-- LAUNCH INTERFACE -->
+	<node name="ear_hw_node" pkg="cmr_ear_hw_interface"  ns="/sobi" type="ear_hw_node" output="screen" launch-prefix="">
+        <param name ="ear_left_gpio" type="int" value="13"/>
+        <param name ="ear_right_gpio" type="int" value="26"/>
+	<param name ="ctrl_frequency" type="double" value="500.0"/>
+    </node>
+
+</launch>

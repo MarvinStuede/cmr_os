@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/* *****************************************************************
+ *
+ * cmr_driver
+ *
+ * Copyright (c) 2019
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   register_velodyne.launch
+ * @author Simon Ehlers (simon.ehlers@stud.uni-hannover.de)
+ * @date   12.08.2019
+ *
+ * @brief  Launches register velodyne nodelets
+ */
+-->
+
+<launch>
+    <arg name="manager"           		default="odom_nodelet_manager"/>
+    <arg name="velodyne_frame"    		default="odom"/>
+    <arg name="velodyne_pc_topic"    		default="/velodyne_points"/>
+    <arg name="velodyne_depth_topic"    	default="velodyne_depth"/>
+    <arg name="cam_front"         		default="cam_front"/>
+    <arg name="cam_back"          		default="cam_back"/>
+
+    <!-- Launch register velodyne cam_front -->
+    <group ns="$(arg cam_front)">       
+        <node pkg="nodelet" type="nodelet" name="register_velodyne_front" args="load cmr_driver/RegisterVelodyne /$(arg manager)" output="screen">
+              <param name="scan_topic" type="string" value="$(arg velodyne_pc_topic)" />
+              <param name="cam_info_topic" type="string" value="/$(arg cam_front)/color/camera_info" />
+              <param name="depth_image_topic" type="string" value="$(arg velodyne_depth_topic)" />
+              <param name="camera_frame" type="string" value="$(arg cam_front)_color_optical_frame" />
+	      <param name="velodyne_frame" type="string" value="$(arg velodyne_frame)" />
+              <param name="horizontal_image" type="bool" value="true" />
+        </node>
+    </group>  
+
+    <!-- Launch register velodyne cam_back -->
+    <group ns="$(arg cam_back)">	
+        <node pkg="nodelet" type="nodelet" name="register_velodyne_back" args="load cmr_driver/RegisterVelodyne /$(arg manager)" output="screen">
+	     <param name="scan_topic" type="string" value="$(arg velodyne_pc_topic)" />
+	     <param name="cam_info_topic" type="string" value="/$(arg cam_back)/color/camera_info" />
+	     <param name="depth_image_topic" type="string" value="$(arg velodyne_depth_topic)" />
+             <param name="camera_frame" type="string" value="$(arg cam_back)_color_optical_frame" />
+             <param name="velodyne_frame" type="string" value="$(arg velodyne_frame)" />
+             <param name="horizontal_image" type="bool" value="false" />  
+	</node> 
+    </group>
+
+
+</launch>

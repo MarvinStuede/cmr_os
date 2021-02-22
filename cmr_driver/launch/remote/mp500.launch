@@ -1,0 +1,8 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <group>
+    <machine name="mp500" address="mp-500-luh" user="neobotix" env-loader="~/ros_startup.sh" default="true" />
+    <!--<include file="$(find neo_mp_500)/launch/bringup.launch"/>-->
+    <node machine="mp500" type="run_bringup.sh" pkg="neo_mp_500" name="run_bringup" output="screen"/>
+  </group>
+</launch>

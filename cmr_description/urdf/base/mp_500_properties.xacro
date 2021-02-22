@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+
+	<!-- Chassis properties -->
+	<xacro:property name="chassisHeight" value="0.4"/>
+	<xacro:property name="chassisLength" value="0.734"/>
+	<xacro:property name="chassisWidth" value="0.600"/>
+	<xacro:property name="chassisMass" value="70"/>d
+
+	<!-- Caster wheel properties -->
+	<xacro:property name="casterRadius" value="0.021"/>
+	<xacro:property name="casterMass" value="0.1"/>
+	<xacro:property name="casterOffsetX" value="-0.47"/>
+
+	<!-- Differential-drive wheels properties -->
+	<xacro:property name="wheelWidth" value="0.085"/>
+	<xacro:property name="wheelRadius" value="0.13"/>
+	<xacro:property name="wheelMass" value="5.5"/>
+
+	<!-- S300 laser properties -->
+
+
+
+</robot>

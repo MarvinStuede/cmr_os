@@ -1,0 +1,40 @@
+# kinetic.rosinstall
+# hector_gazebo: Gazebo simulation plugins for several sensors (e.g. IMU)
+#- git: {local-name: hector_gazebo, uri: 'https://github.com/tu-darmstadt-ros-pkg/hector_gazebo.git'}
+
+# hector_models: Descriptions for several sensors
+# Needed as source, because kinetic debs do not use correct d435 urdf file
+- git: {local-name: hector_models, uri: 'https://github.com/MarvinStuede/hector_models', version: kinetic-devel}
+
+# velodyne_simulator: Simulation plugin for Velodyne (VLP-16) Scanner
+- git: {local-name: velodyne_simulator, uri: 'https://bitbucket.org/DataspeedInc/velodyne_simulator.git'}
+
+# realsense2_camera: Intel RealSense ROS Wrapper
+# Commented, because only needed on jetson
+#- git: {local-name: realsense, uri: 'https://github.com/intel-ros/realsense.git', version: 2.1.0}
+
+# realsense_gazebo_plugin: Simulation plugin for Realsense (D435) RGBD Cameras
+- git: {local-name: realsense_gazebo_plugin, uri: 'https://github.com/MarvinStuede/realsense_gazebo_plugin.git'}
+
+# velodyne: ROS driver for Velodyne (VLP-16) Scanner
+- git: {local-name: velodyne, uri: 'https://github.com/ros-drivers/velodyne.git', version: 1.5.2}
+
+# ethzasl_xsens_driver: XSens IMU ROS Driver
+- git: {local-name: ethzasl_xsens_driver, uri: 'https://github.com/ethz-asl/ethzasl_xsens_driver.git'}
+
+# robot_localization: EKF/UKF for sensor fusion (eg. IMU and Odometry)
+- git: {local-name: robot_localization, uri: 'https://github.com/cra-ros-pkg/robot_localization.git', version: kinetic-devel}
+
+# neo_msgs: Messages for Neobotix Mobile plattforms
+- git: {local-name: neo_msgs, uri: 'https://github.com/neobotix/neo_msgs.git'}
+
+# mongodb_store: Packages to store/retrieve data from MongoDB and logging
+# Fork contains additional scripts, eg. to convert to rosbag
+- git: {local-name: mongodb_store, uri: 'https://github.com/MarvinStuede/mongodb_store.git', version: stuede}
+
+### CMR Repositories ###
+# cmr_msgs: Custom message, service and action files
+- git: {local-name: cmr_msgs, uri: 'git@gitlab.projekt.uni-hannover.de:imes-projekt-cmg_roboter/cmr-code/cmr_msgs.git', version: master}
+
+# cmr_neo: Custom packages for the neobotix platform
+- git: {local-name: cmr_neo, uri: 'git@gitlab.projekt.uni-hannover.de:imes-projekt-cmg_roboter/cmr-code/cmr_neo.git', version: master}

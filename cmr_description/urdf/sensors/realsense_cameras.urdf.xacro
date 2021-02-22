@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="cameras">
+  <xacro:arg name="cam_back_name" default="cam_back"/>
+  <xacro:arg name="cam_front_name" default="cam_front"/>
+  <xacro:property name="cameraBackName" value="$(arg cam_back_name)"/>
+  <xacro:property name="cameraFrontName" value="$(arg cam_front_name)"/>
+  <!-- Create camera instance -->
+
+  <xacro:include filename="$(find hector_sensors_description)/urdf/realsense_d435_camera.urdf.xacro"/>
+
+<!-- ######## CAM TOP DEFINITION #########-->
+
+<!-- Old cam_back definition
+  <realsense_d435_camera name="${cameraBackName}" parent="cam_back">
+    <origin rpy="0 ${0/180*pi} ${0/180*pi}" xyz="0.038175 0.0175 0"/>
+  </realsense_d435_camera>
+-->
+
+<!-- Manually registered: cam_back definition  -->
+  <realsense_d435_camera name="${cameraBackName}" parent="cam_back_mount_link">
+    <origin rpy="0 ${-0.5/180*pi} ${0/180*pi}" xyz="0.0 0.0 0"/>
+  </realsense_d435_camera>
+
+<!-- New cam_back definition based on KIT calibration from 02/14
+  <realsense_d435_camera name="${cameraBackName}" parent="velodyne">
+    <origin rpy="${-1.5408248+pi/2} 0.0055684 ${-1.5824234+pi/2}" xyz="6.828693421172e-02 ${3.700993650317e-02 - 0.014} -9.935198016622e-02"/>
+  </realsense_d435_camera>
+-->
+
+<!-- New cam_back definition based on KIT calibration from 02/17
+  <realsense_d435_camera name="${cameraBackName}" parent="velodyne">
+    <origin rpy="${-1.540811+pi/2} 0.0142488 ${-1.5829405+pi/2}" xyz="6.372072655679e-02 ${6.324851232410e-02 - 0.014} -1.338591524162e-01"/>
+  </realsense_d435_camera>
+-->
+
+
+
+<!-- ######## CAM FRONT DEFINITION #########-->
+
+<!-- Old Cam_front definition
+  <realsense_d435_camera name="${cameraFrontName}" parent="cam_front">
+    <origin xyz="0.041175 0 0.0175" rpy="${pi/2} 0 0"/>
+  </realsense_d435_camera>
+-->
+
+<!-- Manually registrered: Cam_front definition  -->
+  <realsense_d435_camera name="${cameraFrontName}" parent="cam_front_mount_link">
+    <origin xyz="0.0 0 0.0" rpy="0 0 0.0"/>
+  </realsense_d435_camera>
+
+
+<!-- New Cam_front definition based on ETHZ Kalibr calibration from 02/17
+  <realsense_d435_camera name="${cameraFrontName}" parent="imu_sensor_link">
+    <origin xyz="-0.07562419 -0.00292382 0.72165009" rpy="0 0 ${pi}"/>
+  </realsense_d435_camera> -->
+
+
+<!-- New Cam_front definition based on KIT calibration from 02/17 NOT GOOD!
+
+
+  <realsense_d435_camera name="${cameraFrontName}" parent="velodyne">
+    <origin rpy="1.5819975 -0.0222399 3.1049971" xyz="-2.509833757590e-02 ${-8.511453442566e-02 - 0.014} -7.409765403026e-02"/>
+  </realsense_d435_camera>
+-->
+
+<!-- Inserted by Simon -->
+
+ <!-- mount_cam_back STL -->
+<link name="cam_back_mount_link">
+
+</link>
+
+  <joint name="cam_back_mount_joint" type="fixed">
+    <!--<parent link="head_link"/>-->
+	<parent link="velodyne"/>
+    <child link="cam_back_mount_link"/>
+    <!-- Manually registered by Lerche,Petersen,Ehlers-->
+    <!-- <origin xyz="-0.137 0 0.0715" rpy="${-pi/2} ${pi} 0.025"/> -->
+   <!-- <origin xyz="-0.137 0 0.0715" rpy="${pi/2} ${pi} 0.025"/>-->
+        <origin xyz="-0.035 -0.056 0.150" rpy="-1.571 -0.000 -2.104"/>
+  </joint>
+
+<!-- mount_cam_front STL
+ cam_front STL -->
+<link name="cam_front_mount_link">
+
+
+</link>
+
+  <joint name="cam_front_mount_joint" type="fixed">
+   <!-- <parent link="head_link"/>
+    <child link="cam_front_mount_link"/>
+    <origin xyz="0 0 0.1755" rpy="0 -0.05 0.045"/>-->
+    <parent link="velodyne"/>
+    <child link="cam_front_mount_link"/>
+    <origin xyz="0.037 0.060 0.254" rpy="0.000 -0.050 1.057"/>
+  </joint>
+
+<!-- Insert end -->
+
+  <!-- RS200 contains IR images, left here incase this is needed-->
+<!-- Import macro for realsense-RS200 camera-->
+<!--<xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/>
+  <xacro:realsense-rs200 name="${cameraBackName}" ros_topic="${cameraBackName}"/>
+  <xacro:realsense-rs200 name="${cameraFrontName}" ros_topic="${cameraFrontName}"/>
+
+  <joint name="${cameraBackName}_joint" type="fixed">
+    <parent link="skeleton_link"/>
+    <child link="${cameraBackName}_link"/>
+    <origin rpy="0 ${-50/180*pi} 0" xyz="-0.02 0 0.55"/>
+  </joint>
+
+  <joint name="${cameraFrontName}_joint" type="fixed">
+    <parent link="skeleton_link"/>
+    <child link="${cameraFrontName}_link"/>
+    <origin rpy="${pi/2} ${-10/180*pi} ${pi}" xyz="-0.11 0 0.55"/>
+  </joint>-->
+
+</robot>

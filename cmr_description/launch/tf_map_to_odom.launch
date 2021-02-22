@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+<!-- This is only for testing and calibrating the sensors while no mapping algorthm (with map frame) is running -->
+<!-- Frames: tf added by Simon (test) -->
+<node pkg="tf" type="static_transform_publisher"  name="map_to_odom"
+      args="0 0 0 0 0 0 /map odom 100" />
+
+</launch>

@@ -1,0 +1,40 @@
+image: osrf/ros:kinetic-desktop-full-xenial
+.create_ssh: &create_ssh
+  before_script:
+   - curl -s http://lcas.lincoln.ac.uk/repos/public.key | apt-key add -
+   - apt-get update -y && apt-get install openssh-client software-properties-common wget -y
+   - apt-add-repository http://lcas.lincoln.ac.uk/ubuntu/main
+   - apt-get update -y
+   - apt-get install ros-kinetic-spencer-tracking-msgs libproj-dev -y
+   - echo "Adding SSH key..."
+   - eval $(ssh-agent -s)
+   - mkdir -p ~/.ssh
+   - chmod 700 ~/.ssh
+   - touch ~/.ssh/known_hosts
+   - chmod 600 ~/.ssh/known_hosts
+   - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+   - ssh-keyscan gitlab.projekt.uni-hannover.de | tee -a ~/.ssh/known_hosts
+   - git clone https://gitlab.com/VictorLamoine/ros_gitlab_ci.git
+   - source ros_gitlab_ci/gitlab-ci.bash >/dev/null
+
+cache:
+  paths:
+    - ccache/
+
+variables:
+  PKGS: 'cmr_os cmr_api cmr_driver cmr_description' #Gazebo not included, because testing is unreliable
+  #ROS_PACKAGES_TO_INSTALL: "spencer-tracking-msgs"
+
+<<: *create_ssh
+
+#catkin_tools:
+#  stage: build
+#  script:
+  #  - catkin build --summarize --no-status --force-color
+
+catkin tools_tests:
+  stage: test
+  script:
+    - catkin build --summarize --no-status --force-color -DDOWNLOAD_BAG_DATA=true
+    - catkin build $PKGS -j1 --verbose --no-deps --force-color --catkin-make-args run_tests | sed -En '/^-- run_tests.py/,/^-- run_tests.py/p'
+    - catkin_test_results #Check if one of the tests failed!

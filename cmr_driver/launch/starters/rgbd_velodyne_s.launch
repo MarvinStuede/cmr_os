@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Shutdown rgbd velodyne -->
+  <node pkg="cmr_os" type="shutdown_node" name="rgbd_velodyne_shutdown" required="true"/>
+  
+  <arg name="velo_nodelet_manager"              default="velodyne_nodelet_manager" />   
+  <!-- Start RGBD Sync for Velodyne depth -->
+  
+  <include file="$(find cmr_driver)/launch/remote/rgbd_sync.launch">
+  	<arg name="node_name_front"              value="rgbd_sync_velo_front" />
+  	<arg name="node_name_back"               value="rgbd_sync_velo_back" />
+        <arg name="depth_topic_front"            value="/cam_front/velodyne_depth" />
+        <arg name="manager_front"       	 value="/$(arg velo_nodelet_manager)" />
+        <arg name="depth_topic_back"             value="/cam_back/velodyne_depth" />
+        <arg name="manager_back"       		 value="/$(arg velo_nodelet_manager)" />
+  	<arg name="rgbd_topic_front"             value="rgbd_velo" />
+  	<arg name="rgbd_topic_back"              value="rgbd_velo" />
+  	<arg name="republish_rgb_front"          value="true" />
+  	<arg name="republish_rgb_back"           value="true" />
+  </include>
+
+</launch>

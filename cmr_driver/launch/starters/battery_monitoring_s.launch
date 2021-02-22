@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Shutdown battery monitoring -->
+  <node pkg="cmr_os" type="shutdown_node" name="battery_monitoring_shutdown" required="true"/>
+
+  <group>
+    <!-- ***************************************** Machine: neobotix   ********************************-->
+    <machine name="mp500" address="mp-500-luh" user="neobotix" env-loader="~/ros_startup.sh" default="true" />
+
+    <include file="$(find battery_monitoring)/launch/battery_monitoring.launch" />
+
+ </group>
+
+</launch>

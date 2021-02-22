@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/* *****************************************************************
+ *
+ * cmr_driver
+ *
+ * Copyright (c) 2019
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   rotate_img_nodelet.launch
+ * @author Marvin Stuede (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   05/2020
+ *
+ * @brief  Launches rotate image nodelet
+ */
+-->
+
+<launch>
+    <arg name="manager"           		default="/cam_back/realsense2_camera_manager"/>
+
+    <arg name="node_name"          		default="rotate_image"/>
+    <arg name="encoding"          		default="rgb8"/>
+    <arg name="rot_frame_id"          		default="cam_back_rotated_color_optical_frame"/>
+
+    <arg name="image_in"          		default="/cam_back/color/image_raw"/>
+    <arg name="info_in"          		default="/cam_back/color/camera_info"/>
+    <arg name="image_out"          		default="/cam_back/rotated/color/image_raw"/>
+    <arg name="info_out"          		default="/cam_back/rotated/color/camera_info"/>
+
+     <node pkg="nodelet" type="nodelet" name="$(arg node_name)" args="load cmr_driver/RotateImage $(arg manager)" output="screen">
+          <remap from="image_in"       		to="$(arg image_in)"/>
+          <remap from="info_in"     		to="$(arg info_in)"/>
+          <remap from="image_out" 		to="$(arg image_out)"/>
+          <remap from="info_out"      		to="$(arg info_out)"/>
+          <param name="encoding"     		type="string"   value="$(arg encoding)"/>
+          <param name="rot_frame_id"      	type="string"    value="$(arg rot_frame_id)"/>
+     </node>
+
+</launch>

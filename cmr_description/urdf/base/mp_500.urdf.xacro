@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!-- Materials -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mp_500">
+
+  <!--GAZEBO REFERENCES -->
+  <xacro:include filename="$(find cmr_description)/urdf/base/mp_500_gazebo.xacro" />
+
+  <!-- MATERIALS -->
+  <xacro:include filename="$(find cmr_description)/urdf/materials.xacro" />
+
+  <!-- PROPERTIES -->
+  <xacro:include filename="$(find cmr_description)/urdf/base/mp_500_properties.xacro" />
+
+  <!-- MACROS -->
+  <xacro:include filename="$(find cmr_description)/urdf/macros.xacro" />
+
+	<!--++++++++++++++++++++++++++++++base_link++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<!--++++++++++++++++++++body++++++++++++++++++++++++++++-->
+	<link name="base_link">
+
+		<inertial>
+			<mass value="${chassisMass}" /> <!--TODO: Find correct value-->
+			<origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <box_inertia
+				m="${chassisMass}"
+				x="${chassisLength}"
+				y="${chassisWidth}"
+				z="${chassisHeight}"/>
+		</inertial>
+	    <visual name='body'>
+		<origin xyz="0 0 0.001" rpy="0 0 0" />
+		<geometry>
+		    <mesh filename="package://cmr_description/meshes/base.STL" scale="1 1 1"/>
+		</geometry>
+		 <material name="White" />
+	      </visual>
+	      <collision name='body_collision'>
+		<origin xyz="-0.183 0.0 0.234" rpy="0 0 0" />
+		<geometry>
+		  <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+		  <!--cylinder length="0.381" radius="0.2545"/-->
+		</geometry>
+	      </collision>-->
+
+		  <!--    <visual name='box_visual'>
+		  <origin xyz="-0.183 0.0 0.234" rpy="0 0 0" />
+		  <geometry>
+		    <box size="0.734 0.600 0.400"/>
+		  </geometry>
+
+		  <material name="Neobotix/Black" />
+	      </visual>-->
+
+	<!--+++++++++++++++++++caster_back++++++++++++++++++++++++-->
+
+	     <collision name='caster_back_collision'>
+		  	<origin xyz="${casterOffsetX} 0 ${casterRadius-0.01} " rpy="0 0 0" />
+		  <geometry>
+		    <sphere radius="${casterRadius}"/>
+		  </geometry>
+    </collision>
+
+      <!--   <visual name='castor_back_visual'>
+         <origin xyz="${casterOffsetX} 0 ${casterRadius} " rpy="0 0 0" />
+       <geometry>
+         <sphere radius="${casterRadius}"/>
+       </geometry>
+     </visual>-->
+
+	</link>
+++++++++wheel_left_link++++++++++++++++++++++++-->
+	<link name="wheel_left_link" type="wheel">
+	    <inertial>
+	      <mass value="${wheelMass}" />
+	      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+	      <cylinder_inertia
+          m="${wheelMass}"
+          r="${wheelRadius}"
+          h="${wheelWidth}"
+          />
+	    </inertial>
+	    <collision>
+	     	<origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+	     	<geometry>
+			<cylinder radius="${wheelRadius}" length="${wheelWidth}"/>
+	     	</geometry>
+	    </collision>
+	</link>
+
+	<!--+++++++++++++++++++wheel_left_joint++++++++++++++++++++++++-->
+		<joint name="wheel_left_joint" type="revolute">
+			<origin xyz="0 -0.2534 0.127" rpy="0 1.57 1.57" />
+	    	<axis xyz="0 0 1"/>
+	    	<limit effort="1000.0" lower="-1e+16" upper="1e+16" velocity="3.5"/>
+	    	<joint_properties damping="0.0" friction="0.0" />
+	    	<parent link="base_link" />
+	    	<child link="wheel_left_link" />
+	    </joint>
+
+	<!--+++++++++++++++++++wheel_right_link++++++++++++++++++++++++-->
+	<link name="wheel_right_link" type="wheel">
+    <inertial>
+      <mass value="${wheelMass}" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <cylinder_inertia
+        m="${wheelMass}"
+        r="${wheelRadius}"
+        h="${wheelWidth}"
+        />
+    </inertial>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <geometry>
+    <cylinder radius="${wheelRadius}" length="${wheelWidth}"/>
+      </geometry>
+    </collision>
+	</link>
+
+	<!--+++++++++++++++++++wheel_right_joint++++++++++++++++++++++++-->
+	<joint name="wheel_right_joint" type="revolute">
+	   <origin xyz="0 0.2534 0.127" rpy="0 1.57 1.57" />
+	   <axis xyz="0 0 1"/>
+	   <limit effort="1000.0" lower="-1e+16" upper="1e+16" velocity="3.5"/>
+	   <joint_properties damping="0.0" friction="0.0" />
+	   <parent link="base_link" />
+	   <child link="wheel_right_link" />
+	</joint>
+
+
+	<!--+++++++++++++++++++laserscanner_front_joint++++++++++++++++++++++++-->
+	<joint name="scanner_front_joint" type="fixed">
+	  <axis xyz="0 1 0" />
+	  <origin xyz="0.244 0 0.149" rpy="3.14 0 0" />
+	  <parent link="base_link"/>
+	  <child link="scanner_front_link"/>
+	</joint>
+
+	<!--+++++++++++++++++++laserscanner_front_link++++++++++++++++++++++++-->
+	<link name="scanner_front_link" type="laser">
+		<inertial>
+			<mass value="0.001" />
+			<origin xyz="0 0 0.0" rpy="0 0 0" />
+			<inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001" />
+	  	</inertial>
+	  	<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<cylinder length="0.154" radius="0.053" />
+			</geometry>
+		  </collision>
+	</link>
+
+</robot>

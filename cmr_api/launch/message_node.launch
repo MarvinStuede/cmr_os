@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="cmr_os" type="shutdown_node" name="message_node_shutdown" required="true"/>
+
+     <node ns="sobi" name="message_node" pkg="cmr_api" type="messagenode.py" output="screen" respawn="true"/>
+</launch>

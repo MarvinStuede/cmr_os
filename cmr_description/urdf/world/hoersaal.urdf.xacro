@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hoersaal">
+
+<xacro:macro name="hoersaal" params="xyz rpy">
+    <joint name="hoersaal_joint" type="fixed">
+        <axis xyz="0 0 1" />
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+        <parent link="map"/>
+        <child link="hoersaal_link"/>
+    </joint>
+
+     <link name="hoersaal_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://cmr_description/meshes/hoersaal_02062k19.dae"/>
+      </geometry>
+    </visual>
+  </link>
+</xacro:macro>
+<hoersaal xyz="0 0 0" rpy="0 0 0"/>
+</robot>

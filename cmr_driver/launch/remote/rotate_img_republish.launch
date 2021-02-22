@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<!--
+/* *****************************************************************
+ *
+ * cmr_os
+ *
+ * Copyright (c) 2020
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   rgbd_sync_nodelet.launch
+ * @author Marvin Stuede (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   2020
+ *
+ * @brief  Launches a RGBD Sync nodelet to synchronize an RGB image with a depth image
+ */
+-->
+<launch>
+ <!-- Republishing of compressed topics to provide uncompressed sensor_msgs/Image -->
+ <arg name="republish_rgb"     	    default="false" />
+ <arg name="republish_depth"         default="false" />
+ <arg name="republish_node_name"     default="republish_back_rotated" />
+
+ <arg name="rgb_image_transport"     default="compressed"/>    <!-- Common types: compressed, theora (see "rosrun image_transport list_transports") -->
+  <arg name="depth_image_transport"   default="compressedDepth"/>  <!-- Depth compatible types: compressedDepth (see "rosrun image_transport list_transports") -->
+
+ <!-- RGB-D related topics -->
+ <arg name="rgb_topic"               default="/cam_back/color/image_rect_color" />
+ <arg name="depth_topic"             default="/cam_back/aligned_depth_to_color/image_rect" />
+
+  <!-- These arguments should not be modified directly, see referred topics without "_relay" suffix above -->
+ <arg if="$(arg republish_rgb)" 		name="rgb_topic_relay"           default="$(arg rgb_topic)_relay"/>
+ <arg unless="$(arg republish_rgb)" 	name="rgb_topic_relay"           default="$(arg rgb_topic)"/>
+ <arg if="$(arg republish_depth)" 	name="depth_topic_relay"         default="$(arg depth_topic)_relay"/>
+ <arg unless="$(arg republish_depth)" 	name="depth_topic_relay"           default="$(arg depth_topic)"/>
+
+
+	<group if="$(arg republish_rgb)">
+        	<node name="$(arg republish_node_name)_rgb" type="republish" pkg="image_transport" args="$(arg rgb_image_transport) in:=$(arg rgb_topic) raw out:=$(arg rgb_topic_relay)" />	
+	</group>
+
+	<group if="$(arg republish_depth)">
+        	<node name="$(arg republish_node_name)_depth" type="republish" pkg="image_transport" args="$(arg depth_image_transport) in:=$(arg depth_topic) raw out:=$(arg depth_topic_relay)" />
+	</group>
+</launch>

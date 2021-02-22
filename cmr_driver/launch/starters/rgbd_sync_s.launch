@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Shutdown RGBD Sync for Cameras -->
+	<node pkg="cmr_os" type="shutdown_node" name="rgbd_sync_shutdown" required="true"/>
+	<!-- **************************************** Machine: jetson   ********************************-->
+      <!-- Define machine: Jetson -->
+      <machine name="jetson" address="cmr01-jetson" env-loader="/home/jetsonuser/cmr_utils/Scripts/setup_scripts/env_loader_scripts/env_load_jetson.sh" user="jetsonuser" default="true"/>
+      <!-- Start RGBD Sync for Cameras -->
+      <include file="$(find cmr_driver)/launch/remote/rgbd_sync.launch">
+				<arg name="use_rotated"           value="false" />
+      </include>
+
+</launch>

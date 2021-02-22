@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Shutdown voice interface -->
+  <node pkg="cmr_os" type="shutdown_node" name="speech_shutdown" required="true"/>
+
+  <!-- Launch API (Sentiment Executor) -->
+  <include file="$(find cmr_api)/launch/cmr_api.launch"/>
+
+  <include file="$(find cmr_speech)/launch/voice_interface.launch"/>
+
+</launch>

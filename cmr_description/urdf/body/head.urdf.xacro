@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- Materials -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="head">
+
+  <!-- PROPERTIES-->
+  <xacro:include filename="$(find cmr_description)/urdf/body/head_properties.xacro" />
+
+  <!-- MACROS -->
+  <xacro:include filename="$(find cmr_description)/urdf/macros.xacro" />
+
+  <link name="head_link">
+
+    <inertial>
+      <mass value="${headMass}" /> <!--TODO: Find correct value-->
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <inertia
+        ixx="${headIxx}"
+        ixy = "0"
+        ixz = "0"
+        iyy="${headIyy}"
+        iyz = "0"
+        izz="${headIzz}"
+        />
+      </inertial>
+      <visual name='head'>
+        <geometry>
+          <mesh filename="package://cmr_description/meshes/head.STL" scale="1 1 1"/>
+        </geometry>
+        <material name="White" />
+      </visual>
+    </link>
+    <joint name="head_joint" type="fixed">
+      <origin xyz="${headOffsetX} ${headOffsetY} ${headOffsetZ}" rpy="0 0 0" />
+      <parent link="torso_link" />
+      <child link="head_link" />
+    </joint>
+</robot>

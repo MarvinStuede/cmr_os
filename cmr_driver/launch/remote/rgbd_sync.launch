@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+/* *****************************************************************
+ *
+ * cmr_os
+ *
+ * Copyright (c) 2020
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   rgbd_sync_nodelet.launch
+ * @author Marvin Stuede (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   2020
+ *
+ * @brief  Launches two RGBD Sync nodelets.
+ */
+-->
+<launch>
+  <arg name="cam_front"         		default="cam_front"/>
+  <arg name="cam_back"          		default="cam_back"/>
+
+  <arg name="node_name_front"              default="rgbd_sync_front" />
+  <arg name="node_name_back"               default="rgbd_sync_back" />
+  <arg name="node_name_rotated"               default="rgbd_sync_back_rotated" />
+
+  <!-- RGB-D related topics -->
+  <arg name="rgb_topic_front"              default="/$(arg cam_front)/color/image_rect_color" />
+  <arg name="depth_topic_front"            default="/$(arg cam_front)/aligned_depth_to_color/image_rect" />
+  <arg name="camera_info_topic_front"      default="/$(arg cam_front)/color/camera_info" />
+
+  <!-- Nodelet manager for front camera -->
+  <arg name="manager_front"       	 default="/$(arg cam_front)/realsense2_camera_manager" />
+
+  <!-- Republish the RGB image (front) as a sensor_msgs/Image. Necessary if image only available in compressed format (e.g. after network transport) -->
+  <!-- Only one RGB image republisher is necessary per computer per image -->
+  <arg name="republish_rgb_front"       	 default="false" />
+  <arg name="republish_depth_front"       	 default="false" />
+
+  <arg name="rgb_topic_back"               default="/$(arg cam_back)/color/image_rect_color" />
+  <arg name="depth_topic_back"             default="/$(arg cam_back)/aligned_depth_to_color/image_rect" />
+  <arg name="camera_info_topic_back"       default="/$(arg cam_back)/color/camera_info" />
+
+  <arg name="rgb_topic_back_rotated"               default="/$(arg cam_back)/rotated/color/image_rect_color" />
+  <arg name="depth_topic_back_rotated"             default="/$(arg cam_back)/rotated/aligned_depth_to_color/image_rect" />
+  <!-- Nodelet manager for back camera -->
+  <arg name="manager_back"       		 default="/$(arg cam_back)/realsense2_camera_manager" />
+
+  <!-- Republish the RGB image (back) as a sensor_msgs/Image. Necessary if image only available in compressed format (e.g. after network transport) -->
+  <!-- Only one RGB image republisher is necessary per computer per image -->
+  <arg name="republish_rgb_back"       	    default="false" />
+  <arg name="republish_depth_back"       	  default="false" /> 
+  <arg name="republish_rgb_back_rotated"       	  default="false" />
+  <arg name="republish_depth_back_rotated"        default="false" />
+  <arg name="rgbd_topic_front"              default="rgbd_image" />
+  <arg name="rgbd_topic_back"               default="rgbd_image" />
+  <arg name="rgbd_topic_back_rotated"       default="rgbd_image_rotated" />
+
+  <arg name="use_rotated" default="false"/>
+
+  <arg if="$(arg republish_rgb_front)" 		    name="rgb_topic_relay_front"           default="$(arg rgb_topic_front)_relay"/>
+  <arg unless="$(arg republish_rgb_front)" 	  name="rgb_topic_relay_front"           default="$(arg rgb_topic_front)"/>
+  <arg if="$(arg republish_depth_front)" 	    name="depth_topic_relay_front"         default="$(arg depth_topic_front)_relay"/>
+  <arg unless="$(arg republish_depth_front)" 	name="depth_topic_relay_front"         default="$(arg depth_topic_front)"/>
+
+  <arg if="$(arg republish_rgb_back)" 		    name="rgb_topic_relay_back"           default="$(arg rgb_topic_back)_relay"/>
+  <arg unless="$(arg republish_rgb_back)" 	  name="rgb_topic_relay_back"           default="$(arg rgb_topic_back)"/>
+  <arg if="$(arg republish_depth_back)" 	    name="depth_topic_relay_back"         default="$(arg depth_topic_back)_relay"/>
+  <arg unless="$(arg republish_depth_back)" 	name="depth_topic_relay_back"         default="$(arg depth_topic_back)"/>
+
+  <include ns="$(arg cam_front)" file ="$(find cmr_driver)/launch/remote/rgbd_sync_nodelet.launch">
+	<arg name="node_name"             value="$(arg node_name_front)"/>
+  	<arg name="manager"               value="$(arg manager_front)"/>
+	<arg name="republish_rgb"     	  value="$(arg republish_rgb_front)" />
+	<arg name="republish_depth"       value="$(arg republish_depth_front)" />
+	<arg name="republish_node_name"   value="republish_$(arg node_name_front)"/>
+	<arg name="rgb_topic"             value="$(arg rgb_topic_front)"/>
+	<arg name="rgbd_topic"            value="$(arg rgbd_topic_front)"/>
+	<arg name="depth_topic"           value="$(arg depth_topic_front)"/>
+	<arg name="camera_info_topic"     value="$(arg camera_info_topic_front)"/>
+        <arg name="rgb_topic_relay"       value="$(arg rgb_topic_relay_front)"/>
+        <arg name="depth_topic_relay"     value="$(arg depth_topic_relay_front)"/>
+  </include>
+
+  <include ns="$(arg cam_back)" file ="$(find cmr_driver)/launch/remote/rgbd_sync_nodelet.launch">
+	<arg name="node_name"             value="$(arg node_name_back)"/>
+    	<arg name="manager"               value="$(arg manager_back)"/>
+	<arg name="republish_rgb"     	  value="$(arg republish_rgb_back)" />
+	<arg name="republish_node_name"   value="republish_$(arg node_name_back)"/>
+	<arg name="republish_depth"     	value="$(arg republish_depth_back)" />
+	<arg name="rgb_topic"             value="$(arg rgb_topic_back)"/>
+	<arg name="rgbd_topic"            value="$(arg rgbd_topic_back)"/>
+	<arg name="depth_topic"           value="$(arg depth_topic_back)"/>
+	<arg name="camera_info_topic"     value="$(arg camera_info_topic_back)"/>
+    	<arg name="rgb_topic_relay"       value="$(arg rgb_topic_relay_back)"/>
+ 	<arg name="depth_topic_relay"     value="$(arg depth_topic_relay_back)"/>
+  </include>
+
+  <include ns="$(arg cam_back)" file ="$(find cmr_driver)/launch/remote/rotate_img_republish.launch">
+	<arg name="republish_rgb"     	  value="$(arg republish_rgb_back_rotated)" />
+	<arg name="republish_node_name"   value="republish_$(arg node_name_back)_rotated"/>
+	<arg name="republish_depth"     	value="$(arg republish_depth_back_rotated)" />
+	<arg name="rgb_topic"             value="$(arg rgb_topic_back_rotated)"/>
+	<arg name="depth_topic"           value="$(arg depth_topic_back_rotated)"/>
+  </include>
+</launch>

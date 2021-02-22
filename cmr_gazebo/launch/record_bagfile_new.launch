@@ -1,0 +1,20 @@
+<!-- -->
+<launch>
+
+  <arg name="path" default="/home/simon/Rosbags/rtab_test_large.bag"/>
+
+  <arg name="rgb_topic_1"        default="/cam_back/color/image_raw"/>
+  <arg name="rgb_info_topic_1"   default="/cam_back/color/camera_info"/>
+  <arg name="depth_topic_1"      default="/cam_back/depth/image_raw"/>
+  <arg name="rgb_topic_2"        default="/cam_front/color/image_raw"/>
+  <arg name="rgb_info_topic_2"   default="/cam_front/color/camera_info"/>
+  <arg name="depth_topic_2"      default="/cam_front/depth/image_raw"/>
+  <arg name="odom_topic"       default="/odom"/>
+  <arg name="imu_topic"       default="/imu/data"/>
+  <arg name="scan_topic"       default="/base/laser/scan_filtered"/>
+  <arg name="scan_cloud_topic" default="/velodyne_points"/>
+
+  <node pkg="rosbag" type="record" name="rosbag_record_vlp" output="screen"
+  	args="-O  $(arg path) /tf /tf_static $(arg rgb_topic_1) $(arg rgb_info_topic_1) $(arg depth_topic_1)  $(arg rgb_topic_2) $(arg rgb_info_topic_2) $(arg depth_topic_2) $(arg odom_topic) $(arg scan_topic) $(arg scan_cloud_topic) $(arg imu_topic)"/>
+
+</launch>

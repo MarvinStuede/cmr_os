@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="cam_front_name" default="cam_front" />
+  <arg name="cam_back_name" default="cam_back" />
+  <!--robot model-->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find cmr_description)/robots/sobi.urdf.xacro' cam_front_name:=$(arg cam_front_name) cam_back_name:=$(arg cam_back_name)" />
+</launch>

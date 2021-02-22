@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+ <node pkg="dynamic_reconfigure" type="dynparam" name="dyn_load_cam_front" args="load /cam_front/aligned_depth_to_color/image_rect/compressedDepth $(find cmr_driver)/cfg/dynamic/cam_front_depth.yaml" output="screen"/>
+     <node pkg="dynamic_reconfigure" type="dynparam" name="dyn_load_cam_back" args="load /cam_back/aligned_depth_to_color/image_rect/compressedDepth $(find cmr_driver)/cfg/dynamic/cam_back_depth.yaml" output="screen"/>
+
+</launch>

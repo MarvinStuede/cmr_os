@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="cam_front_name" default="cam_front" />
+  <arg name="cam_back_name" default="cam_back" />
+  <!--robot model-->
+	<include file="$(find cmr_description)/launch/model_upload.launch">
+		    <arg name="cam_front_name" value="$(arg cam_front_name)" />
+         	    <arg name="cam_back_name" value="$(arg cam_back_name)" />
+	</include>
+
+ <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+	     <param name="use_gui" value="false" />
+	     <rosparam param="source_list">[ear_states, arm_states]</rosparam>
+ </node>
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+</launch>

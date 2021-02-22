@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cmr_gazebo</name>
+   <version>0.0.0</version>
+  <description>The cmr_gazebo package</description>
+  <maintainer email="Marvin.Stuede@imes.uni-hannover.de">Marvin Stüde</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo</build_depend>
+  <depend>tf</depend>
+  <depend>roslib</depend>
+  <depend>cmr_neo_ultrasonic</depend>
+  <depend>gazebo_ros</depend>
+  <depend>nav_msgs</depend>
+  <depend>octomap_server</depend>
+  <depend>rgbd_launch</depend>
+  <depend>controller_manager</depend>
+  <depend>joint_state_controller</depend>
+  <depend>effort_controllers</depend>
+  <depend>joint_trajectory_controller</depend>
+  <depend>position_controllers</depend>
+  <depend>gazebo_ros_control</depend> <!-- Commented due to unreliable depts, annoying in CI-->
+  <depend>teleop_twist_keyboard</depend>
+  <depend>ros_control</depend>
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+  </export>
+</package>

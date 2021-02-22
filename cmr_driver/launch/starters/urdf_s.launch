@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+
+<launch>
+
+  <include file="$(find cmr_description)/launch/model_with_pub.launch"/>
+
+</launch>

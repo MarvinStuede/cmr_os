@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cmr_description</name>
+  <version>0.1.0</version>
+  <description>The cmr_description package</description>
+  <maintainer email="Marvin.Stuede@imes.uni-hannover.de">Marvin Stüde</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>hector_gazebo_plugins</depend>
+  <depend>hector_sensors_description</depend>
+  <depend>tf</depend>
+  <exec_depend>interactive_marker_proxy</exec_depend>
+</package>

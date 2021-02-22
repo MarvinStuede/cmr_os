@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Shutdown EKF -->
+  <node pkg="cmr_os" type="shutdown_node" name="ekf_shutdown" required="true"/>
+
+  <!-- Launch robot Localization by an EKF -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf" clear_params="true" output="screen" respawn="true">
+    <rosparam command="load" file="$(find cmr_driver)/cfg/ekf_localization.yaml" />
+  </node>
+
+</launch>

@@ -1,0 +1,14 @@
+email:
+  distributor: ['marvin.stuede@imes.uni-hannover.de']
+  transfer_protocol: 'email.uni-hannover.de'
+  port: 587
+  robo_mail: 'sobi@imes.uni-hannover.de'
+  auth: 'U8vBv2HD1EaE7L9v4b1196cRVqmKmb6lJSmlNhU7tTY='
+  # Old: Gmail account
+  #transfer_protocol: 'smtp.gmail.com'
+  #robo_mail: 'sobi.information@gmail.com'
+
+telegram:
+  chat_ids: ['267753161']
+  token: '732282475:AAHmrnvFg3XPEU_Ah96NJESjt2JphfVOBuo'
+

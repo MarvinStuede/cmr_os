@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+
+	<!-- Chassis properties -->
+	<!-- TODO: Update Values-->
+	<xacro:property name="headMass" value="0.1"/>
+	<xacro:property name="headIxx" value="0.1"/>
+	<xacro:property name="headIyy" value="0.1"/>
+	<xacro:property name="headIzz" value="0.1"/>
+	<xacro:property name="headOffsetX" value="0.07038"/>
+	<xacro:property name="headOffsetY" value="0"/>
+	<xacro:property name="headOffsetZ" value="0.66"/>
+
+
+
+</robot>

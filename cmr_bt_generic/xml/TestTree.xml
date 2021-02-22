@@ -1,0 +1,10 @@
+<root main_tree_to_execute = "TestTree" >
+<BehaviorTree ID="TestTree">
+                <SequenceStar>
+                        <Speak	text="Das ist ein Testtext"/>
+                </SequenceStar>
+</BehaviorTree>
+</root>
+
+
+

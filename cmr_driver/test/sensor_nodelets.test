@@ -1,0 +1,106 @@
+<!-- -*- mode: XML -*- -->
+
+<!--
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+*										*
+* Copyright (c) 2020,								*
+* Institute of Mechatronic Systems,						*
+* Leibniz Universitaet Hannover.						*
+* (BSD 3-Clause License)							*
+* All rights reserved.								*
+/**
+* @file   sensor_nodelets.test
+* @author Marvin Stüde (Marvin.Stuede@imes.uni-hannover.de)
+* @date   11/2020
+*
+* @brief  Does publish and HZ tests for RGBD Sync and Register Velodyne
+*/
+-->
+
+<launch>
+
+    <include file="$(find cmr_driver)/launch/bag/bag_play.launch">
+        <arg name="file" value="$(find cmr_driver)/test/cmg_people_labor_3pers.bag"/>
+        <arg name="register_velo" value="true"/>
+    </include>
+
+    <test test-name="publishtest_data" pkg="rostest" type="publishtest">
+        <rosparam>
+        topics:
+            - name: /velodyne_points
+              timeout: 60
+              negative: False
+            - name: /cam_front/color/image_rect_color/compressed
+              timeout: 60
+              negative: False
+            - name: /cam_back/color/image_rect_color/compressed
+              timeout: 60
+              negative: False
+        </rosparam>
+    </test>
+
+    <arg name="hz_error"       default="3.0"/>
+    <arg name="hz_duration"       default="15.0"/>
+    <arg name="hz_wait"       default="20.0"/>
+
+    <test test-name="velo_depth_front" pkg="rostest" type="hztest" >
+        <rosparam  subst_value="true">
+        topic: /cam_front/velodyne_depth
+        hz: 6.0
+        hzerror: $(arg hz_error)
+        test_duration: $(arg hz_duration)
+        wait_time: $(arg hz_wait)
+        </rosparam>
+    </test>
+
+    <test test-name="velo_depth_back" pkg="rostest" type="hztest" >
+        <rosparam  subst_value="true">
+        topic: /cam_back/velodyne_depth
+        hz: 6.0
+        hzerror: $(arg hz_error)
+        test_duration: $(arg hz_duration)
+        wait_time: $(arg hz_wait)
+        </rosparam>
+    </test>
+
+    <test test-name="rgbd_front" pkg="rostest" type="hztest" >
+        <rosparam  subst_value="true">
+        topic: /cam_front/rgbd_image
+        hz: 10.0
+        hzerror: $(arg hz_error)
+        test_duration: $(arg hz_duration)
+        wait_time: $(arg hz_wait)
+        </rosparam>
+    </test>
+
+    <test test-name="rgbd_back" pkg="rostest" type="hztest" >
+        <rosparam  subst_value="true">
+        topic: /cam_back/rgbd_image
+        hz: 7.0
+        hzerror: $(arg hz_error)
+        test_duration: $(arg hz_duration)
+        wait_time: $(arg hz_wait)
+        </rosparam>
+    </test>
+
+    <test test-name="rgbd_velo_front" pkg="rostest" type="hztest" name="hztest_rgbd_velo_front" >
+        <rosparam  subst_value="true">
+        topic: /cam_front/rgbd_velo
+        hz: 6.0
+        hzerror: $(arg hz_error)
+        test_duration: $(arg hz_duration)
+        wait_time: $(arg hz_wait)
+        </rosparam>
+    </test>
+
+    <test test-name="rgbd_velo_back" pkg="rostest" type="hztest">
+    <rosparam  subst_value="true">
+    topic: /cam_back/rgbd_velo
+    hz: 6.0
+    hzerror: 1.0
+    test_duration: $(arg hz_duration)
+    wait_time: $(arg hz_wait)
+    </rosparam>
+    </test>
+
+</launch>

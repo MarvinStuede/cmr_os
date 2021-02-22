@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<root>
+    <TreeNodesModel>
+        <!-- ############################### ACTION NODES ################################# -->
+        <!-- Send a message via telegram and wait for a response
+        messagenode.py (cmr_api package) must be running for this to work -->
+        <Action ID="CallSupervisor">
+            <input_port name="message">Message to send the supervisor via telegram</input_port>
+        </Action>
+
+        <!-- Set a Facial expression on the LED Panel.-->
+        <Action ID="FacialExpression">
+            <input_port default="5.0" name="duration">Duration in seconds</input_port>
+            <input_port default="NEUTRAL" name="expression">Facial expression for LED Panel. Can be {NEUTRAL, SLEEP, CONFUSED, PROCESS, ERROR, SLEEP, ANGRY,  LAUGHING}</input_port>
+        </Action>
+
+        <!-- Write a blackboard entry to ROSOUT -->
+        <Action ID="ROSOut">
+            <input_port default="INFO" name="level">Verbosity level (DEBUG, INFO, WARN, ERROR, FATAL)</input_port>
+            <input_port name="msg">Message to log</input_port>
+            <input_port default="0" name="throttle_period">Throttle period in s. Message will only be printed this often. If 0: No limit</input_port>
+        </Action>
+
+        <!-- Save a ROS param to blackboard. Only string implemented -->
+        <Action ID="ROSParamToBlackboard">
+            <output_port name="entry">Value of the parameter</output_port>
+            <input_port name="param">Name of the parameter</input_port>
+        </Action>
+
+        <!-- Save a ROS Timestamp to blackboard -->
+        <Action ID="SaveTimestamp">
+            <output_port default="{timestamp}" name="timestamp">Timestamp as Unix time (double)</output_port>
+        </Action>
+
+        <!-- Send a message via Email or TELEGRAM
+        messagenode.py (cmr_api package) must be running for this to work -->
+        <Action ID="SendMessage">
+            <input_port name="message">Message to send</input_port>
+            <input_port default="TELEGRAM" name="service">Service to use. Can be {EMAIL, TELEGRAM}</input_port>
+        </Action>
+
+        <!-- Let Sobi speak a text -->
+        <Action ID="Speak">
+            <input_port name="text">Text to speak</input_port>
+        </Action>
+
+        <!--Check if a duration has passed since a timestamp -->
+        <Condition ID="TimePassed">
+            <input_port name="duration">Check if this duration has passed since timestamp</input_port>
+            <input_port default="{timestamp}" name="timestamp">Timestamp to check</input_port>
+        </Condition>
+        
+        <!-- ############################### CONDITION NODES ############################## -->
+        <!-- Condition to check if robot is currently charging -->
+        <Condition ID="Charging"/>
+
+        <!-- Condition to check if someone is interaction with the robot via tablet -->
+        <Condition ID="InteractionWithTablet"/>
+        <!-- ############################### CONTROL NODES ################################ -->
+
+
+        <!-- ############################### DECORATOR NODES ############################## -->
+
+    </TreeNodesModel>
+</root>

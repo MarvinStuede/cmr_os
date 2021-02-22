@@ -1,0 +1,14 @@
+
+<library path="lib/libcmr_driver_nodelets">
+	<class name="cmr_driver/RotateImage" type="cmr_driver::RotateImage" base_class_type="nodelet::Nodelet">
+	    <description>
+	    Rotates an image for 90 deg
+	     </description>
+        </class>
+
+        <class name="cmr_driver/RegisterVelodyne" type="cmr_driver::RegisterVelodyne" base_class_type="nodelet::Nodelet">
+            <description>
+            Nodelet to project a 3D lidar scan into a Depth image
+             </description>
+        </class>
+</library>

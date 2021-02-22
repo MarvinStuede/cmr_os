@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- declare arguments with default values -->
+  <arg name="calibration" default="$(find cmr_driver)/cfg/VLP-16.yaml"/>
+  <arg name="device_ip" default="192.168.1.201" />
+  <arg name="frame_id" default="odom" />
+  <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+  <arg name="max_range" default="100.0" />
+  <arg name="min_range" default="0.2" />
+  <arg name="pcap" default="" />
+  <arg name="port" default="2368" />
+  <arg name="read_fast" default="false" />
+  <arg name="read_once" default="false" />
+  <arg name="repeat_delay" default="0.0" />
+  <arg name="rpm" default="360.0" />
+  <arg name="cut_angle" default="-0.01" />
+  <arg name="laserscan_ring" default="-1" />
+  <arg name="laserscan_resolution" default="0.007" />
+  <arg name="organize_cloud" default="false" />
+  <arg name="cloud_topic" default="velodyne_points" />
+
+  <!-- start nodelet manager and driver nodelets -->
+  <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+    <arg name="device_ip" value="$(arg device_ip)"/>
+    <arg name="frame_id" value="velodyne"/>
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="model" value="VLP16"/>
+    <arg name="pcap" value="$(arg pcap)"/>
+    <arg name="port" value="$(arg port)"/>
+    <arg name="read_fast" value="$(arg read_fast)"/>
+    <arg name="read_once" value="$(arg read_once)"/>
+    <arg name="repeat_delay" value="$(arg repeat_delay)"/>
+    <arg name="rpm" value="$(arg rpm)"/>
+    <arg name="cut_angle" value="$(arg cut_angle)"/>
+  </include>
+  <!--<remap from="/scan" to="/velodyne_nodelet_manager/scan"/>   Otherwise it makes trouble with icp_odometry -->
+
+  <!-- start cloud nodelet -->
+<!--<include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+    <arg name="calibration" value="$(arg calibration)"/>
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="max_range" value="$(arg max_range)"/>
+    <arg name="min_range" value="$(arg min_range)"/>
+  </include>-->
+
+  <!-- start laserscan nodelet -->
+  <!--<include file="$(find velodyne_pointcloud)/launch/laserscan_nodelet.launch">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="ring" value="$(arg laserscan_ring)"/>
+    <arg name="resolution" value="$(arg laserscan_resolution)"/>
+  </include>-->
+
+ <!-- Start transform nodelet. Transforms the Poincloud to a fixed frame -->
+  <include file="$(find velodyne_pointcloud)/launch/transform_nodelet.launch">
+    <arg name="calibration" value="$(arg calibration)"/>
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="max_range" value="$(arg max_range)"/>
+    <arg name="min_range" value="$(arg min_range)"/>
+    <arg name="frame_id" value="$(arg frame_id)"/>
+    <remap from="velodyne_points" to="$(arg cloud_topic)"/>
+   </include>
+
+  <!-- Start Pointcloud to laserscan nodelet. Projects the pointcloud to a 2D Plane -->
+  <node pkg="nodelet" type="nodelet" name="pointcloud_to_laserscan_node" args="load  pointcloud_to_laserscan/pointcloud_to_laserscan_nodelet $(arg manager)" output="screen">
+    <!-- See all params at http://wiki.ros.org/pointcloud_to_laserscan -->
+      
+    <param name="min_height" value="1.28"/>
+    <param name="max_height" value="2.0"/>
+    <param name="range_min" value="0.05"/>
+    <param name="range_max" value="10.0"/>
+    <param name="angle_min" value="-3.141"/>
+    <param name="angle_max" value="3.141"/>
+    <param name="use_inf" value="false"/>
+    <param name="target_frame" value="base_link"/>
+
+    <remap from="cloud_in" to="$(arg cloud_topic)"/>
+    <remap from="scan" to="velodyne_laserscan"/>
+  </node>
+
+  <!-- Start register velodyne for cameras. Creates a depth image from the pointcloud in the respective camera frames -->
+<!--  <include file="$(find cmr_driver)/launch/register_velodyne.launch">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="velodyne_frame" value="$(arg frame_id)" />
+    <arg name="velodyne_pc_topic" value="/$(arg cloud_topic)" />
+  </include> -->
+
+</launch>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- Shutdown ears -->
+    <node pkg="cmr_os" type="shutdown_node" name="ears_shutdown" required="true"/>
+
+    <!-- **************************************** Machine: Pi   ********************************-->
+    <group>
+
+     <machine name="pi" address="cmr01-pi" user="pi" env-loader="/home/pi/cmr_utils/Scripts/setup_scripts/env_loader_scripts/env_load_pi.sh" default="true" />
+     <!-- Ear HW Interface -->
+     <include file="$(find cmr_driver)/launch/remote/ear_hw_node.launch"/>
+    </group>
+    <!-- **************************************** End: Pi   ********************************-->
+
+</launch>

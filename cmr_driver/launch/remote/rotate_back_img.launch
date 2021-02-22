@@ -1,0 +1,58 @@
+<!-- -*- mode: XML -*- -->
+<!--
+/* *****************************************************************
+ *
+ * cmr_driver
+ *
+ * Copyright (c) 2019
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   rotate_back_img.launch
+ * @author Marvin Stuede (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   05/2020
+ *
+ * @brief  Launches nodlets to rotate rgb and depth images from the back camera
+ */
+-->
+
+<launch>
+    <arg name="manager"           		default="realsense2_camera_manager"/>
+    <arg name="cam_back"          		default="cam_back"/>
+
+	<include ns="$(arg cam_back)" file ="$(find cmr_driver)/launch/rotate_image_nodelet.launch">
+		<arg name="node_name" value="rotate_image_rgb"/>
+		<arg name="encoding" value="rgb8"/>
+		<arg name="manager" value="$(arg manager)"/>
+		<arg name="image_in" value="color/image_rect_color"/>
+		<arg name="info_in" value="color/camera_info"/>
+		<arg name="image_out" value="rotated/color/image_rect_color"/>
+		<arg name="info_out" value="rotated/color/camera_info"/>
+	</include>
+
+	<include ns="$(arg cam_back)" file ="$(find cmr_driver)/launch/rotate_image_nodelet.launch">
+		<arg name="node_name" value="rotate_image_depth"/>
+		<arg name="encoding" value="32FC1"/>
+		<arg name="manager" value="$(arg manager)"/>
+		<arg name="image_in" value="aligned_depth_to_color/image_rect"/>
+		<arg name="info_in" value="aligned_depth_to_color/camera_info"/>
+		<arg name="image_out" value="rotated/aligned_depth_to_color/image_rect"/>
+		<arg name="info_out" value="rotated/aligned_depth_to_color/camera_info"/>
+	</include>
+
+    <node name="tf_cam_back_rotated" pkg="tf" type="static_transform_publisher" args="0 0 0 1.57079632679 0 0  cam_back_color_optical_frame cam_back_rotated_color_optical_frame 100"/>
+
+</launch>

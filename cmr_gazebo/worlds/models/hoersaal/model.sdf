@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="hoersaal">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://hoersaal/meshes/hoersaal_02062k19.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://hoersaal/meshes/hoersaal_02062k19.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <pose frame=''>-0 0 0 1.57079 0 0</pose>
+  </model>
+</sdf>

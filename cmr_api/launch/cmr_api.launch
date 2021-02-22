@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- LOAD PARAMETERS -->
+	<rosparam file="$(find cmr_api)/cfg/params.yaml" command="load" ns="cmr_api" />	
+
+        <node name="sentiment_executor" pkg="cmr_api" type="sentiment_executor" output="screen" />
+        <!--node name="tablet_menu_handler" pkg="cmr_api" type="tablet_menu_handler" output="screen"-->
+            <!-- Wait time until a sentence can be said again -->
+            <!--param name="dur_sentence_lock" type="double" value="70.0"/-->r
+        <!--/node-->
+</launch>

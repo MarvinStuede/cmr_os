@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Shutdown velodyne -->
+  <node pkg="cmr_os" type="shutdown_node" name="velodyne_shutdown" required="true"/>
+
+
+  <arg name="velo_nodelet_manager" default="velodyne_nodelet_manager" />
+
+  <!-- Start Velodyne driver and nodelets -->
+  <include file="$(find cmr_driver)/launch/velodyne.launch">
+        <arg name="manager"              	value="$(arg velo_nodelet_manager)" />
+  </include>
+
+  <!-- WORKAROUND: Republish of PointCloud in velodyne frame for RTAB-Map to work properly -->
+  <node pkg="cmr_driver" type="pcl_repub" name="pcl_repub_velo" output="screen" respawn="true"/>
+
+</launch>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sonars">
+
+	<xacro:include filename="$(find cmr_description)/urdf/sensors/sonar_sensor.urdf.xacro" />
+	<!-- Sonar properties -->
+	<xacro:property name="sonarUpdateRate" value="30"/>
+	<xacro:property name="sonarMinRange" value="0.25"/>
+	<xacro:property name="sonarMaxRange" value="1.5"/>
+	<xacro:property name="sonarAngle" value="${60 * PI/180}"/>
+	<xacro:property name="sonarRayCount" value="1.5"/>
+
+	 <!-- <xacro:sonar_sensor name="sonar_fl" parent="skeleton_link" ros_topic="base/relayboard_v2/usboard/sensor1" update_rate="${sonarUpdateRate}" min_range="${sonarMinRange}" 	max_range="${sonarMaxRange}" field_of_view="${sonarAngle}" ray_count="${sonarRayCount}" >
+		   <origin xyz="0.20116 0.140 0.29948" rpy="0 -${pi/6} 0" />
+		</xacro:sonar_sensor>
+
+	  <xacro:sonar_sensor name="sonar_fr" parent="skeleton_link" ros_topic="base/relayboard_v2/usboard/sensor2" update_rate="${sonarUpdateRate}" min_range="${sonarMinRange}" max_range="${sonarMaxRange}" field_of_view="${sonarAngle}" ray_count="${sonarRayCount}" >
+	     <origin xyz="0.20116 -0.140 0.29948" rpy="0 -${pi/6} 0" />
+	  </xacro:sonar_sensor> -->
+
+	  <xacro:sonar_sensor name="us_4" parent="base_link" ros_topic="base/relayboard_v2/usboard/sensor4" update_rate="${sonarUpdateRate}" min_range="${sonarMinRange}" max_range="${sonarMaxRange}" field_of_view="${sonarAngle}" ray_count="${sonarRayCount}" >
+	     <origin xyz="-0.57 0 0.29948" rpy="0 0 ${pi}" />
+	  </xacro:sonar_sensor>
+
+	  <xacro:sonar_sensor name="us_3" parent="base_link" ros_topic="base/relayboard_v2/usboard/sensor3" update_rate="${sonarUpdateRate}" min_range="${sonarMinRange}" max_range="${sonarMaxRange}" field_of_view="${sonarAngle}" ray_count="${sonarRayCount}" >
+	     <origin xyz="-0.45 -0.29 0.29948" rpy="0 0 -${pi/2}" />
+	  </xacro:sonar_sensor>
+
+	<xacro:sonar_sensor name="us_5" parent="base_link" ros_topic="base/relayboard_v2/usboard/sensor5" update_rate="${sonarUpdateRate}" min_range="${sonarMinRange}" 		max_range="${sonarMaxRange}" field_of_view="${sonarAngle}" ray_count="${sonarRayCount}" >
+	     <origin xyz="-0.45 0.29 0.29948" rpy="0 0 ${pi/2}" />
+	  </xacro:sonar_sensor>
+</robot>

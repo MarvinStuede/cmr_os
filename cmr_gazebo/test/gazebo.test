@@ -1,0 +1,38 @@
+<!-- -*- mode: XML -*- -->
+
+<!--
+ * @file   gazebo.test
+ * @author Marvin Stüde (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   06/2020
+ *
+ * @brief  Tests if gazebo runs correctly
+ */
+-->
+
+<launch>
+
+  <include file="$(find cmr_gazebo)/launch/simulation.launch">
+    <arg name="gui" value="false"/>
+  </include>
+  <arg name="hz_error"       default="10.0"/>
+  <arg name="hz_duration"       default="15.0"/>
+  <arg name="hz_wait"       default="30.0"/>
+  <test test-name="hztest_velodyne" pkg="rostest" type="hztest" >
+    <rosparam  subst_value="true">
+       topic: /velodyne_points
+       hz: 10.0
+       hzerror: $(arg hz_error)
+       test_duration: $(arg hz_duration)
+       wait_time: $(arg hz_wait)
+    </rosparam>
+    </test>
+  <test test-name="hztest_laser" pkg="rostest" type="hztest" >
+    <rosparam  subst_value="true">
+       topic: /base/laser/scan_filtered
+       hz: 40.0
+       hzerror: $(arg hz_error)
+       test_duration: $(arg hz_duration)
+       wait_time: $(arg hz_wait)
+      </rosparam>
+    </test>
+</launch>

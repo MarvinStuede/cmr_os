@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="cmr" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="cam_top_name" default="cam_top"/>
+  <xacro:arg name="cam_front_name" default="cam_front"/>
+
+  <!-- Neobotix base-->
+  <xacro:include filename="$(find cmr_description)/urdf/base/mp_500.urdf.xacro" />
+
+  <!-- Skeleton -->
+  <xacro:include filename="$(find cmr_description)/urdf/body/skeleton.urdf.xacro" />
+
+  <!-- Velodyne VLP-16 3D Laserscanner -->
+  <xacro:include filename="$(find cmr_description)/urdf/sensors/velodyne_vlp16.urdf.xacro" />
+
+  <!-- Realsense cameras -->
+  <xacro:include filename="$(find cmr_description)/urdf/sensors/realsense_cameras.urdf.xacro" cam_top_name="$(arg cam_top_name)" cam_front_name="$(arg cam_front_name)"/>
+
+  <!-- IMU -->
+  <xacro:include filename="$(find cmr_description)/urdf/sensors/imu.urdf.xacro" />
+
+  <!-- GPS -->
+  <!--<xacro:include filename="$(find cmr_description)/urdf/sensors/gps.urdf.xacro" />-->
+
+  <!-- Sonars -->
+  <xacro:include filename="$(find cmr_description)/urdf/sensors/sonars.urdf.xacro" />
+
+</robot>

@@ -1,0 +1,54 @@
+<!-- -*- mode: XML -*- -->
+<!--
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+ *										*
+ * Copyright (c) 2020,								*
+ * Institute of Mechatronic Systems,						*
+ * Leibniz Universitaet Hannover.						*
+ * (BSD 3-Clause License)							*
+ * All rights reserved.								*
+ *										*
+ * http://www.imes.uni-hannover.de						*
+ *										*
+ * Redistribution and use in source and binary forms, with or without		*
+ * modification, are permitted provided that the following conditions are met:	*
+ * 										*
+ * 1. Redistributions of source code must retain the above copyright notice,	* 
+ *    this list of conditions and the following disclaimer.			*
+ * 										*
+ * 2. Redistributions in binary form must reproduce the above copyright notice,	*
+ *    this list of conditions and the following disclaimer in the documentation	*
+ *    and/or other materials provided with the distribution.			*
+ * 										*
+ * 3. Neither the name of the copyright holder nor the names of its		*
+ *    contributors may be used to endorse or promote products derived from	*
+ *    this software without specific prior written permission.			*
+ * 										*
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"	*
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE	*
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 	*
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 	*
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 		*
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 	*
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 	*
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 	*
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 	*
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 	*
+ * POSSIBILITY OF SUCH DAMAGE.							*
+ *										*
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+
+/**
+ * @file   bag_record.launch
+ * @author Marvin Stüde (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   05/2020
+ *
+ * @brief  Records a bag file for RTAB-Map
+ */
+-->
+<launch>
+  <arg name="prefix" default="cmg"/>
+	<node pkg="rosbag" type="record" name="rosbag_record_rtabmap" output="screen"
+		args="-o $(arg prefix) /tf /tf_static /velodyne_points_vel /velodyne_points /cam_back/color/image_rect_color/compressed /cam_back/color/camera_info /cam_back/aligned_depth_to_color/image_rect/compressedDepth /cam_front/color/image_rect_color/compressed /cam_front/color/camera_info /cam_front/aligned_depth_to_color/image_rect/compressedDepth /cam_front/velodyne_depth/compressedDepth /cam_back/velodyne_depth/compressedDepth /odometry/filtered /base/laser/scan_filtered  "/>
+
+</launch>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <test test-name="cmr_utils_test" pkg="cmr_os" type="cmr_utils_test" />
+</launch>
+
+

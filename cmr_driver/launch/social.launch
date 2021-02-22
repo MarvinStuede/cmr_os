@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!--
+/* *****************************************************************
+ *
+ * cmr_os
+ *
+ * Copyright (c) 2019
+ * Institute of Mechatronic Systems,
+ * Leibniz Universitaet Hannover.
+ * (BSD License)
+ * All rights reserved.
+ *
+ * http://www.imes.uni-hannover.de
+ *
+ * This software is distributed WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.
+ *
+ * For further information see http://www.linfo.org/bsdlicense.html
+ *
+ ******************************************************************/
+
+/**
+ * @file   social.launch
+ * @author Marvin Stuede (marvin.stuede@imes.uni-hannover.de)
+ * @date   08/2019
+ *
+ * @brief  Launches LED and speech components
+ */
+-->
+<launch>
+
+<!-- **************************************** Machine: CMR   ********************************-->
+   <!-- Launch Rosbridge -->
+   <!-- Used for 3D Map display on tablet -->
+   <!-- <include file="$(find cmr_description)/launch/rosbridge.launch"/>-->
+   <!-- Launch Speech -->
+   <include file="$(find cmr_speech)/launch/voice_interface.launch"/>
+   <!-- Launch LED Strips -->
+   <include file="$(find cmr_led)/launch/led_strips.launch"/>
+
+   <!-- Launch API (Sentiment Executor) -->
+   <include file="$(find cmr_api)/launch/cmr_api.launch"/>
+<!-- **************************************** End: CMR   ********************************-->
+
+<!-- **************************************** Machine: Pi   ********************************-->
+  <group>
+
+    <machine name="pi" address="cmr01-pi" user="pi" env-loader="/home/pi/cmr_utils/Scripts/setup_scripts/env_loader_scripts/env_load_pi.sh" default="true" />
+    <!-- LED Panel -->
+    <include file="$(find cmr_driver)/launch/remote/led_panel.launch"/>
+    <!-- Ear HW Interface -->
+    <include file="$(find cmr_driver)/launch/remote/ear_hw_node.launch"/>
+  </group>
+<!-- **************************************** End: Pi   ********************************-->
+
+</launch>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Shutdown platform -->
+  <node pkg="cmr_os" type="shutdown_node" name="platform_shutdown" required="true"/>
+
+  <group>
+    <!-- ***************************************** Machine: neobotix   ********************************-->
+    <machine name="mp500" address="mp-500-luh" user="neobotix" env-loader="~/ros_startup.sh" default="true" />
+    <!--<include file="$(find neo_mp_500)/launch/bringup.launch"/>-->
+    <node machine="mp500" type="run_bringup.sh" pkg="neo_mp_500" name="run_bringup" output="screen" respawn="true"/>
+
+ </group>
+
+</launch>

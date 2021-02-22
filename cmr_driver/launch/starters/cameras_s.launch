@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+      <!-- Shutdown cameras -->
+      <node pkg="cmr_os" type="shutdown_node" name="cam_shutdown" required="true"/>
+
+      <!-- Load dynamic reconfigure files for cam front and back. Necessary to decrease depth compression level-->
+      <node pkg="dynamic_reconfigure" type="dynparam" name="dyn_load_cam_front" args="load /cam_front/aligned_depth_to_color/image_rect/compressedDepth $(find cmr_driver)/cfg/dynamic/cam_front_depth.yaml" output="screen"/>
+      <node pkg="dynamic_reconfigure" type="dynparam" name="dyn_load_cam_back" args="load /cam_back/aligned_depth_to_color/image_rect/compressedDepth $(find cmr_driver)/cfg/dynamic/cam_back_depth.yaml" output="screen"/>
+
+      <node name="republish_cam_front_rgb" type="republish" pkg="image_transport" args="compressed in:=/cam_front/color/image_rect_color raw out:=/cam_front/color/image_rect_color_relay" />
+      <node name="republish_cam_back_rgb" type="republish" pkg="image_transport" args="compressed in:=/cam_back/color/image_rect_color raw out:=/cam_back/color/image_rect_color_relay" />
+
+<!-- **************************************** Machine: jetson   ********************************-->
+	   <!-- Define machine: Jetson -->
+      <machine name="jetson" address="cmr01-jetson" env-loader="/home/jetsonuser/cmr_utils/Scripts/setup_scripts/env_loader_scripts/env_load_jetson.sh" user="jetsonuser" default="true"/>
+
+      <!-- Start front camera -->
+      <include file="$(find cmr_driver)/launch/remote/cam_front_jetson.launch"/>
+
+      <!-- Start back camera delayed. Otherwise the nodelet manager could crash because of a bug in librealsense  -->
+      <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+      	<arg name="time" value="2" />
+      	<arg name="pkg" value="cmr_driver" />
+      	<arg name="file" value="cam_back_jetson.launch" />
+      	<arg name="value" value="" />
+      </include>
+
+	     <!-- Rotate Image -->
+      <include file="$(find cmr_driver)/launch/remote/rotate_back_img.launch"/>
+
+
+</launch>

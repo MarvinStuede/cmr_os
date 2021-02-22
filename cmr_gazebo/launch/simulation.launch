@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!--set to the required robot and world-->
+  <arg name="robotname" default="cmr"/>
+  <arg name="robotworld" default ="hoersaal.world"/>
+  <arg name="pos_x" default ="0"/>
+  <arg name="pos_y" default ="0"/>
+  <arg name="pos_z" default ="0"/>
+
+  <!--To launch RVIZ set the value to true-->
+  <arg name="rviz" default="false"/>
+
+  <!--Set camera names -->
+  <arg name="cam_back_name" default="cam_back" />
+  <arg name="cam_front_name" default="cam_front" />
+
+<!---=================================================================================================================================================================-->
+
+  <!--Gazebo Variables-->
+  <arg name="world" default="empty"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+<!--Start nodelet managers for cameras -->
+<!-- Start nodelet manager in provided namespace -->
+  <group ns="$(arg cam_front_name)">
+<include file="$(find rgbd_launch)/launch/includes/manager.launch.xml">
+  <arg name="name"                value="$(arg cam_front_name)_nodelet_manager" />
+  <arg name="num_worker_threads"  value="4" />
+</include>
+</group>
+  <group ns="$(arg cam_back_name)">
+<include file="$(find rgbd_launch)/launch/includes/manager.launch.xml">
+  <arg name="name"                value="$(arg cam_back_name)_nodelet_manager" />
+  <arg name="num_worker_threads"  value="4" />
+</include>
+</group>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+
+    <arg name="world_name" value="$(find cmr_gazebo)/worlds/$(arg robotworld)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+
+<!---=================================================================================================================================================================-->
+  <!--Collision avoidance with sonar sensors-->
+  <include file="$(find cmr_neo_ultrasonic)/launch/us_collision.launch"/>
+
+  <!--<include file="$(find cmr_driver)/launch/velo_to_laser.launch"/>-->
+
+  <!--Robot description to param server-->
+  <include file="$(find cmr_description)/launch/model_with_pub.launch">
+    <arg name="cam_front_name" value="$(arg cam_front_name)" />
+    <arg name="cam_back_name" value="$(arg cam_back_name)" />
+  </include>
+
+  <node name="$(arg robotname)_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+  args="-urdf -param robot_description -model $(arg robotname) -x $(arg pos_x) -y $(arg pos_y) -z $(arg pos_z)" />
+
+  <!-- Publish ground truth odom TF -->
+  <node name="odom_gt_publisher" pkg="cmr_gazebo" type="odom_gt_publisher"  output="screen"/>
+
+  <!-- Transformers for depth frames of the cameras-->
+  <node pkg="tf" type="static_transform_publisher" name="$(arg cam_front_name)_depth_link" args="0 0 0 -1.57 0 -1.57 $(arg cam_front_name)_link $(arg cam_front_name)_depth_optical_frame 1" />
+  <node pkg="tf" type="static_transform_publisher" name="$(arg cam_back_name)_depth_link" args="0 0 0 -1.57 0 -1.57 $(arg cam_back_name)_link $(arg cam_back_name)_depth_optical_frame 1" />
+
+
+<!---=================================================================================================================================================================-->
+
+<!-- Start EKF IMU and odometry fusion -->
+<!--  <include file="$(find cmr_gazebo)/launch/robot_localization_ekf.launch"/>-->
+
+
+<!-- ROS CONTROL -->
+	<!-- LOAD PARAMETERS -->
+        <rosparam file="$(find cmr_description)/cfg/sobi_control.yaml" command="load" />
+	<!--<rosparam file="$(find cmr_ear_hw_interface)/cfg/sobi_arm_control.yaml" command="load" />-->
+
+	<!-- load the controllers-->
+  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    	output="screen" ns="/sobi" args="arm_right_position_controller arm_left_position_controller ear_right_trajectory_controller ear_left_trajectory_controller"/>
+
+
+ <group if="$(arg rviz)">
+ <include file="$(find cmr_gazebo)/launch/rviz.launch"/>
+ </group>
+
+</launch>

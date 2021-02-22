@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+
+	<!-- Chassis properties -->
+	<!-- TODO: Update Values-->
+	<xacro:property name="earMass" value="0.2"/>
+	<xacro:property name="earIxx" value="0.01"/>
+	<xacro:property name="earIyy" value="0.01"/>
+	<xacro:property name="earIzz" value="0.01"/>
+	<xacro:property name="earLowerLim" value="${-85*pi/180}"/>
+	<xacro:property name="earUpperLim" value="${85*pi/180}"/>
+	<xacro:property name="earVelLim" value="3.1415"/>
+	<xacro:property name="earLeftOffsetX" value="-0.075"/>
+	<xacro:property name="earLeftOffsetY" value="0.174"/>
+	<xacro:property name="earLeftOffsetZ" value="0.07728"/>
+	<xacro:property name="earRightOffsetX" value="-0.075"/>
+	<xacro:property name="earRightOffsetY" value="-0.174"/>
+	<xacro:property name="earRightOffsetZ" value="0.07728"/>
+
+
+
+</robot>

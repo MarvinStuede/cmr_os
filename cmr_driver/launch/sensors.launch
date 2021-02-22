@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/* *****************************************************************
+
+/**
+ * @file   sensors.launch
+ * @author Marvin Stuede (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   2020
+ *
+ * @brief  Launches all drivers for the sensors and the urdf model
+ */
+-->
+
+<launch>
+     <include file="$(find cmr_driver)/launch/starters/camera_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/ekf_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/imu_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/platform_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/rgbd_sync_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/rgbd_velodyne_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/urdf_s.launch"/>
+     <include file="$(find cmr_driver)/launch/starters/velodyne_s.launch"/>
+</launch>

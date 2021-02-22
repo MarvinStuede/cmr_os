@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!--
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+*										*
+* Copyright (c) 2020,								*
+* Institute of Mechatronic Systems,						*
+* Leibniz Universitaet Hannover.						*
+* (BSD 3-Clause License)							*
+* All rights reserved.								*
+*										*
+* http://www.imes.uni-hannover.de						*
+*										*
+* Redistribution and use in source and binary forms, with or without		*
+* modification, are permitted provided that the following conditions are met:	*
+* 										*
+* 1. Redistributions of source code must retain the above copyright notice,	*
+*    this list of conditions and the following disclaimer.			*
+* 										*
+* 2. Redistributions in binary form must reproduce the above copyright notice,	*
+*    this list of conditions and the following disclaimer in the documentation	*
+*    and/or other materials provided with the distribution.			*
+* 										*
+* 3. Neither the name of the copyright holder nor the names of its		*
+*    contributors may be used to endorse or promote products derived from	*
+*    this software without specific prior written permission.			*
+* 										*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"	*
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE	*
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 	*
+* ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 	*
+* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 		*
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 	*
+* SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 	*
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 	*
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 	*
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 	*
+* POSSIBILITY OF SUCH DAMAGE.							*
+*										*
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+
+/**
+* @file   bag_play.launch
+* @author Marvin Stüde (Marvin.Stuede@imes.uni-hannover.de)
+* @date   05/2020
+*
+* @brief  Starts RGBD Sync and plays a bag file
+*/
+-->
+<launch>
+    <arg name="file" default="/home/parallels/Downloads/2020-05-08_imes_flur.bag " doc="Path to bag file" />
+    <arg name="manager_front" default="rgbd_manager_front" doc="Name of the nodelet manager to create for front"/>
+    <arg name="manager_back" default="rgbd_manager_back" doc="Name of the nodelet manager to create for back"/>
+
+
+    <arg name="rate" default="1" doc="Bag publish rate"/>
+    <arg name="register_velo" default="false" doc="Start register_velodyne nodelet to create depth image from velodyne data"/>
+
+    <node pkg="nodelet" type="nodelet" name="$(arg manager_front)"  args="manager"/>
+    <node pkg="nodelet" type="nodelet" name="$(arg manager_back)"  args="manager"/>
+
+    <group if="$(arg register_velo)">
+        <include file="$(find cmr_driver)/launch/register_velodyne.launch">
+            <arg name="manager" value="$(arg manager_front)" />
+            <arg name="velodyne_frame" value="odom" />
+            <arg name="velodyne_pc_topic" value="/velodyne_points" />
+        </include>
+    </group>
+
+    <arg if="$(arg register_velo)"        name="repub_velo"           default="false"/>
+    <arg unless="$(arg register_velo)" 	  name="repub_velo"           default="true"/>
+
+    <!-- Start RGBD Sync for Cameras -->
+    <include file="$(find cmr_driver)/launch/remote/rgbd_sync.launch">
+        <arg name="rgb_topic_front"             value="/cam_front/color/image_rect_color" />
+        <arg name="depth_topic_front"           value="/cam_front/aligned_depth_to_color/image_rect" />
+        <arg name="manager_front"       	value="/$(arg manager_front)" />
+        <arg name="rgb_topic_back"            	value="/cam_back/color/image_rect_color" />
+        <arg name="depth_topic_back"            value="/cam_back/aligned_depth_to_color/image_rect" />
+        <arg name="manager_back"                value="/$(arg manager_back)" />
+        <arg name="republish_rgb_front"         value="true" />
+        <arg name="republish_rgb_back"          value="true" />
+        <arg name="republish_depth_front"       value="true" />
+        <arg name="republish_depth_back"        value="true" />
+    </include>
+
+    <!-- Start RGBD Sync for Velodyne depth -->
+    <include file="$(find cmr_driver)/launch/remote/rgbd_sync.launch">
+        <arg name="node_name_front"              value="rgbd_sync_velo_front" />
+        <arg name="node_name_back"               value="rgbd_sync_velo_back" />
+        <arg name="rgb_topic_front"              value="/cam_front/color/image_rect_color" />
+        <arg name="depth_topic_front"            value="/cam_front/velodyne_depth" />
+        <arg name="rgb_topic_back"            	 value="/cam_back/color/image_rect_color" />
+        <arg name="depth_topic_back"             value="/cam_back/velodyne_depth" />
+        <arg name="manager_front"       	 value="/$(arg manager_front)" />
+        <arg name="manager_back"       		 value="/$(arg manager_back)" />
+        <arg name="rgbd_topic_front"             value="rgbd_velo" />
+        <arg name="rgbd_topic_back"              value="rgbd_velo" />
+        <arg name="rgb_topic_relay_front"        value="/cam_front/color/image_rect_color_relay" />
+        <arg name="rgb_topic_relay_back"         value="/cam_back/color/image_rect_color_relay" />
+        <arg name="republish_rgb_front"          value="false" />
+        <arg name="republish_rgb_back"           value="false" />
+        <arg name="republish_depth_front"        value="$(arg repub_velo)" />
+        <arg name="republish_depth_back"         value="$(arg repub_velo)" />
+    </include>
+
+    <param name="use_sim_time" type="bool" value="true" />
+    <node pkg="cmr_os" type="republish_tf_static.py" name="republish_tf_static" output="screen"/>
+    <node pkg="rosbag" type="play" name="rosbag_play_rtabmap" output="screen" args="$(arg file) tf_static:=tf_static_old -r $(arg rate) --clock --loop"/>
+
+
+</launch>

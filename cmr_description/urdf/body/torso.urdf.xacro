@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- Materials -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="torso">
+
+  <!-- PROPERTIES-->
+  <xacro:include filename="$(find cmr_description)/urdf/body/torso_properties.xacro" />
+
+  <!-- MACROS -->
+  <xacro:include filename="$(find cmr_description)/urdf/macros.xacro" />
+
+  <!--++++++++++++++++++++++++++++++base_link++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+  <!--++++++++++++++++++++body++++++++++++++++++++++++++++-->
+  <link name="torso_link">
+
+    <inertial>
+      <mass value="${torsoMass}" /> <!--TODO: Find correct value-->
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <inertia
+        ixx="${torsoIxx}"
+        ixy = "0"
+        ixz = "0"
+        iyy="${torsoIyy}"
+        iyz = "0"
+        izz="${torsoIzz}"
+        />
+      </inertial>
+      <visual name='torso'>
+        <geometry>
+          <mesh filename="package://cmr_description/meshes/torso.STL" scale="1 1 1"/>
+        </geometry>
+     <material name="White" />
+      </visual>
+    </link>
+    <joint name="torso_joint" type="fixed">
+      <origin xyz="${torsoOffsetX} ${torsoOffsetY} ${torsoOffsetZ}" rpy=" 0 ${torsorot} 0" />
+      <parent link="base_link" />
+      <child link="torso_link" />
+    </joint>
+</robot>
