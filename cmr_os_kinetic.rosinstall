@@ -1,4 +1,4 @@
-# kinetic.rosinstall
+
 # hector_gazebo: Gazebo simulation plugins for several sensors (e.g. IMU)
 #- git: {local-name: hector_gazebo, uri: 'https://github.com/tu-darmstadt-ros-pkg/hector_gazebo.git'}
 
@@ -28,13 +28,9 @@
 # neo_msgs: Messages for Neobotix Mobile plattforms
 - git: {local-name: neo_msgs, uri: 'https://github.com/neobotix/neo_msgs.git'}
 
-# mongodb_store: Packages to store/retrieve data from MongoDB and logging
-# Fork contains additional scripts, eg. to convert to rosbag
-- git: {local-name: mongodb_store, uri: 'https://github.com/MarvinStuede/mongodb_store.git', version: stuede}
-
 ### CMR Repositories ###
 # cmr_msgs: Custom message, service and action files
-- git: {local-name: cmr_msgs, uri: 'git@gitlab.projekt.uni-hannover.de:imes-projekt-cmg_roboter/cmr-code/cmr_msgs.git', version: master}
+- git: {local-name: cmr_msgs, uri: 'git@github.com:MarvinStuede/cmr_msgs.git', version: master}
 
 # cmr_neo: Custom packages for the neobotix platform
-- git: {local-name: cmr_neo, uri: 'git@gitlab.projekt.uni-hannover.de:imes-projekt-cmg_roboter/cmr-code/cmr_neo.git', version: master}
+- git: {local-name: cmr_neo, uri: 'git@github.com:MarvinStuede/cmr_neo.git', version: master}
